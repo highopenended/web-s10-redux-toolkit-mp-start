@@ -2,14 +2,11 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteQuote, setHighlightedQuote, editQuoteAuthenticity, toggleVisibility } from '../state/quotesSlice'
 
-
-
-
 export default function Quotes() {
 
   const quotes = useSelector(st=>st.quotesState.quotes)
-  const displayAllQuotes = useSelector(st=>st.quotesState.displayAllQuotes) // ✨ `displayAllQuotes` must come from the Redux store
-  const highlightedQuote = useSelector(st=>st.quotesState.highlightedQuote) // ✨ `displayAllQuotes` must come from the Redux store
+  const displayAllQuotes = useSelector(st=>st.quotesState.displayAllQuotes)
+  const highlightedQuote = useSelector(st=>st.quotesState.highlightedQuote) 
 
   const dispatch = useDispatch()
 
@@ -31,7 +28,7 @@ export default function Quotes() {
                 <div>{qt.authorName}</div>
                 <div className="quote-buttons">
                   <button onClick={() => {dispatch(deleteQuote(qt.id))}}>DELETE</button>
-                  <button onClick={() => {/* ✨ dispatch an action */ }}>HIGHLIGHT</button>
+                  <button onClick={() => {dispatch(setHighlightedQuote(qt.id))}}>HIGHLIGHT</button>
                   <button onClick={() => {dispatch(editQuoteAuthenticity(qt.id))}}>FAKE</button>
                 </div>
               </div>
@@ -41,7 +38,7 @@ export default function Quotes() {
           !quotes?.length && "No quotes here! Go write some."
         }
       </div>
-      {!!quotes?.length && <button onClick={() => { dispatch(toggleVisibility()) /* ✨ dispatch an action */ }}>
+      {!!quotes?.length && <button onClick={() => { dispatch(toggleVisibility())  }}>
         {displayAllQuotes ? 'HIDE' : 'SHOW'} FAKE QUOTES
       </button>}
     </div>

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 
 let id = 1
-const getNextId = () => id++
+export const getNextId = () => id++
 const initialState = {
   displayAllQuotes: true,
   highlightedQuote: null,
@@ -34,21 +34,31 @@ export const quotesSlice=createSlice({
   initialState,
   reducers:{
     toggleVisibility(state){state.displayAllQuotes=!state.displayAllQuotes},
-    deleteQuote(state,action){
-      state.quotes=state.quotes.filter(qt=>qt.id!==action.payload)
-    },
-
+    deleteQuote(state,action){state.quotes=state.quotes.filter(qt=>qt.id!==action.payload)},
     editQuoteAuthenticity(state,action){
-      console.log(action.payload)
       state.quotes.map(qt=>{
         return qt.id===action.payload 
-        ? qt.apocryphal=!qt.apocryphal
-        : qt.apocryphal
-      })
+          ? qt.apocryphal=!qt.apocryphal
+          : qt.apocryphal
+      })},
+    setHighlightedQuote(state,action){
+      state.highlightedQuote=action.payload
     },
-
-    setHighlightedQuote(state,action){},
-    createQuote(state,action){},
+    createQuote:{
+      prepare({authorName, quoteText}){        
+        return {
+          payload:{
+            authorName,
+            quoteText,
+            apocryphal:false,
+            id:getNextId()
+          }
+        }
+      },
+      reducer(state,action){
+        state.quotes.push(action.payload)
+      }
+    }
   }
 })
 
